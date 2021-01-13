@@ -1,0 +1,16 @@
+[
+{
+  "modid": "skyclientconfig",
+  "name": "SkyclientConfig",
+  "description": "A mod for skyclient which has global mod config.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Tyman"],
+  "credits": "Nacrt and Zordlan for creating Skyclient",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
