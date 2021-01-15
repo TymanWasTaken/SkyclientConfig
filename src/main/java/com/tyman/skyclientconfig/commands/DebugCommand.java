@@ -1,25 +1,40 @@
 package com.tyman.skyclientconfig.commands;
 
-import net.minecraft.command.CommandBase;
+import com.tyman.skyclientconfig.BaseHandler;
+import com.tyman.skyclientconfig.BasicCommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
 
-public class DebugCommand extends CommandBase {
-    @Override
-    public String getCommandName() {
-        return "sccdebug";
+public class DebugCommand extends BasicCommand {
+    public DebugCommand() {
+        super("scctest", new Object[]{"gt", 0});
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "sccdebug";
-    }
-
-    public boolean canCommandSenderUseCommand(ICommandSender sender) {
-        return true;
-    }
-
-    @Override
-    public void processCommand(ICommandSender sender, String[] args) {
-        // pass
+    public void execute(ICommandSender sender, String[] args) {
+        try {
+            boolean switchTo;
+            switch (args[1]) {
+                case "true": {
+                    switchTo = true;
+                    break;
+                }
+                case "false": {
+                    switchTo = false;
+                    break;
+                }
+                default: {
+                    switchTo = true;
+                }
+            }
+            BaseHandler.setConfigProp(args[0], switchTo);
+            sender.addChatMessage(new ChatComponentText("It worked probably"));
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            sender.addChatMessage(new ChatComponentText("Illegal argument: " + e.getMessage()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            sender.addChatMessage(new ChatComponentText("Unhandled error" + e.getMessage()));
+        }
     }
 }

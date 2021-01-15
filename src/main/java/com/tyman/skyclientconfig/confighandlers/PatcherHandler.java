@@ -10,9 +10,9 @@ import java.util.HashMap;
 
 public class PatcherHandler extends ModHandler {
 
-    private final HashMap<String, Field> configFields = new HashMap<>();
+    public final HashMap<String, Field> configFields = new HashMap<>();
 
-    public PatcherHandler() {
+    public void init() {
         PatcherConfig config = Patcher.instance.getPatcherConfig();
         Class<? extends PatcherConfig> clazz = config.getClass();
         for (Field field : clazz.getDeclaredFields()) {
@@ -31,6 +31,19 @@ public class PatcherHandler extends ModHandler {
         return "patcher";
     }
     public Object getConfigProperty(String prop) throws IllegalAccessException {
-        return configFields.get(prop).get(null);
+        Field field = configFields.get(prop);
+        if (field != null) {
+            return field.get(null);
+        } else {
+            throw new IllegalArgumentException("Could not find patcher config field");
+        }
+    }
+    public void setConfigProperty(String prop, Object value) throws ClassCastException, IllegalAccessException {
+        Field field = configFields.get(prop);
+        if (field != null) {
+            field.set(null, field.getType().cast(value));
+        } else {
+            throw new IllegalArgumentException("Could not find patcher config field");
+        }
     }
 }
