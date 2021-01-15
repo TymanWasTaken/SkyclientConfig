@@ -1,7 +1,9 @@
 package com.tyman.skyclientconfig;
 
 import com.tyman.skyclientconfig.commands.DebugCommand;
+import com.tyman.skyclientconfig.confighandlers.DSMHandler;
 import com.tyman.skyclientconfig.confighandlers.ModHandler;
+import com.tyman.skyclientconfig.confighandlers.PatcherHandler;
 import com.tyman.skyclientconfig.utils.Utils;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.Loader;
@@ -19,9 +21,9 @@ public class SkyclientConfig
     public static final String MODID = "skyclientconfig";
     public static final String VERSION = "0.0.1";
     public final HashMap<String, ModHandler> configHandlers = new HashMap<>();
-    private static final Map<String, String> modHandlers = Utils.createMap(
-            new String[]{"PatcherHandler", "patcher"},
-            new String[]{"PatcherHandler", "patcher"}
+    private static final Map<Class<? extends ModHandler>, String> modHandlers = Utils.createHandlerMap(
+            new Object[]{PatcherHandler.class, "patcher"},
+            new Object[]{DSMHandler.class, "Danker's Skyblock Mod"}
     );
 
     @Mod.Instance(MODID)
@@ -37,7 +39,7 @@ public class SkyclientConfig
     @SuppressWarnings("unused")
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        for (Map.Entry<String, String> modHandler : modHandlers.entrySet()) {
+        for (Map.Entry<Class<? extends ModHandler>, String> modHandler : modHandlers.entrySet()) {
             ModHandler handlerClass;
             try {
                 handlerClass = ModHandler.class.cast(Class.forName("com.tyman.skyclientconfig.confighandlers." + modHandler.getKey()));

@@ -1,5 +1,7 @@
 package com.tyman.skyclientconfig.utils;
 
+import com.tyman.skyclientconfig.confighandlers.ModHandler;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,10 +12,11 @@ public class Utils {
      *               and the second the value
      * @return The created HashMap
      */
-    public static Map<String, String> createMap(String[] ...values) {
-        Map<String,String> map = new HashMap<>();
-        for (String[] value : values) {
-            map.put(value[0], value[1]);
+    @SuppressWarnings("unchecked")
+    public static Map<Class<? extends ModHandler>, String> createHandlerMap(Object[] ...values) {
+        Map<Class<? extends ModHandler>,String> map = new HashMap<>();
+        for (Object[] value : values) {
+            map.put((Class<? extends ModHandler>) value[0], (String) value[1]);
         }
         return map;
     }
